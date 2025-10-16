@@ -9,6 +9,8 @@ from rest_framework.views import APIView
 
 
 
+
+
 class WarehouseViewSet(viewsets.ModelViewSet):
     queryset = Warehouse.objects.all()
     serializer_class = WarehouseSerializer
@@ -61,3 +63,5 @@ class ProductLocationAPIView(APIView):
             } for w in warehouses
         ]
         return Response(data)
+
+

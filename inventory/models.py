@@ -42,3 +42,22 @@ class EmployeeInventory(models.Model):
 
     def __str__(self):
         return f"{self.employee.user.username} - {self.product.name}"
+
+
+class ProductLog(models.Model):
+    ACTION_CHOICES = (
+        ('added_to_employee', 'Adedd to employee'),
+        ('removed_from_central', 'Removed from central'),
+        ('created', 'Created'),
+        ('updated', 'Updated')
+    )
+
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='logs')
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    action = models.CharField(max_length=50, choices=ACTION_CHOICES)
+    quantity = models.IntegerField(null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.product.name} - {self.action} - {self.timestamp}"
+
