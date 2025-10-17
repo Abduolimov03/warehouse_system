@@ -1,4 +1,6 @@
 from django.apps import AppConfig
+import threading
+import time
 
 
 class InventoryConfig(AppConfig):
@@ -6,8 +8,12 @@ class InventoryConfig(AppConfig):
     name = 'inventory'
 
     def ready(self):
+
         from .utils import start_low_stock_scheduler
-        try:
+
+        def delayed_start():
+            time.sleep(5)
             start_low_stock_scheduler()
-        except Exception as e:
-            print(f"[InventoryConfig] Scheduler ishlamadi: {e}")
+
+        threading.Thread(target=delayed_start, daemon=True).start()
+        print("⏳ Scheduler 5 soniyadan so‘ng ishga tushadi...")

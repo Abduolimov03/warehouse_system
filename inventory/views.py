@@ -16,14 +16,14 @@ from .serializers import WarehouseSerializer, ProductSerializer, EmployeeInvento
 class WarehouseViewSet(viewsets.ModelViewSet):
     queryset = Warehouse.objects.all()
     serializer_class = WarehouseSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
 
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     @action(detail=False, methods=['get'])
     def central(self, request):
@@ -36,7 +36,7 @@ class ProductViewSet(viewsets.ModelViewSet):
 
 class EmployeeInventoryViewSet(viewsets.ModelViewSet):
     serializer_class = EmployeeInventorySerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
         employee = Employee.objects.get(user=self.request.user)
@@ -80,7 +80,7 @@ class ProductLocationAPIView(APIView):
 
 
 class StatisticsAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request):
         """Umumiy statistik ma’lumotlar"""
@@ -115,7 +115,7 @@ def haversine(lat1, lon1, lat2, lon2):
 
 
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([permissions.AllowAny])
 def nearest_warehouse(request):
     """
     Foydalanuvchining koordinatalaridan eng yaqin omborni aniqlaydi.
@@ -191,7 +191,7 @@ def product_locations(request, pk):
 
 
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([permissions.AllowAny])
 def export_products_csv(request):
     """Mahsulotlar ro‘yxatini CSV formatda eksport qilish"""
     qs = Product.objects.all().values('id', 'name', 'code', 'price', 'quantity', 'warehouse__name')
@@ -203,7 +203,7 @@ def export_products_csv(request):
 
 
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([permissions.AllowAny])
 def export_products_excel(request):
     """Mahsulotlar ro‘yxatini Excel formatda eksport qilish"""
     qs = Product.objects.all().values('id', 'name', 'code', 'price', 'quantity', 'warehouse__name')
