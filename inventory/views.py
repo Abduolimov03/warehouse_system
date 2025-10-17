@@ -49,12 +49,12 @@ class EmployeeInventoryViewSet(viewsets.ModelViewSet):
         employee = Employee.objects.get(user=request.user)
 
         if product.quantity <= 0:
-            return Response({"detail": "❗ Mahsulot markaziy omborda tugagan."}, status=400)
+            return Response({"detail": "Mahsulot markaziy omborda tugagan."}, status=400)
 
         item, created = EmployeeInventory.objects.get_or_create(employee=employee, product=product)
         if created:
-            return Response({"detail": "✅ Mahsulot muvaffaqiyatli qo‘shildi."}, status=201)
-        return Response({"detail": "ℹ️ Bu mahsulot allaqachon mavjud."}, status=200)
+            return Response({"detail": "Mahsulot muvaffaqiyatli qo‘shildi."}, status=201)
+        return Response({"detail": "Bu mahsulot allaqachon mavjud."}, status=200)
 
 
 
@@ -126,7 +126,7 @@ def nearest_warehouse(request):
 
     if not lat or not lon:
         return Response(
-            {"detail": "❗ Iltimos, lat va lon parametrlarini yuboring. Masalan: ?lat=41.31&lon=69.28"},
+            {"detail": "Iltimos, lat va lon parametrlarini yuboring. Masalan: ?lat=41.31&lon=69.28"},
             status=400
         )
 
@@ -134,7 +134,7 @@ def nearest_warehouse(request):
         user_lat = float(lat)
         user_lon = float(lon)
     except ValueError:
-        return Response({"detail": "❗ Noto‘g‘ri koordinatalar kiritilgan."}, status=400)
+        return Response({"detail": "Noto‘g‘ri koordinatalar kiritilgan."}, status=400)
 
     warehouses = Warehouse.objects.exclude(latitude__isnull=True, longitude__isnull=True)
     if not warehouses.exists():

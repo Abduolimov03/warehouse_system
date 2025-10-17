@@ -37,4 +37,4 @@ def start_low_stock_scheduler():
 
     thread = threading.Thread(target=check_low_stock, daemon=True)
     thread.start()
-    print("🤖 Low stock Telegram scheduler ishga tushdi...")
+    print("Low stock Telegram scheduler ishga tushdi...")
