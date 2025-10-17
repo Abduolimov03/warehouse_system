@@ -9,6 +9,7 @@ from .views import (
     export_products_csv,
     export_products_excel,
     StatisticsAPIView,
+    nearest_warehouse,
 )
 
 router = DefaultRouter()
@@ -28,4 +29,7 @@ urlpatterns = [
     # Eksportlar
     path('export/products/csv/', export_products_csv, name='export_products_csv'),
     path('export/products/xlsx/', export_products_excel, name='export_products_excel'),
+
+    path('warehouse/nearest/', nearest_warehouse, name='nearest_warehouse'),
+
 ]

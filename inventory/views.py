@@ -103,6 +103,7 @@ class StatisticsAPIView(APIView):
 
 
 
+
 def haversine(lat1, lon1, lat2, lon2):
     """Masofa (km) hisoblash"""
     R = 6371.0
@@ -111,6 +112,50 @@ def haversine(lat1, lon1, lat2, lon2):
     a = sin(dlat / 2) ** 2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2) ** 2
     c = 2 * atan2(sqrt(a), sqrt(1 - a))
     return R * c
+
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def nearest_warehouse(request):
+    """
+    Foydalanuvchining koordinatalaridan eng yaqin omborni aniqlaydi.
+    Query params: ?lat=<float>&lon=<float>
+    """
+    lat = request.query_params.get('lat')
+    lon = request.query_params.get('lon')
+
+    if not lat or not lon:
+        return Response(
+            {"detail": "❗ Iltimos, lat va lon parametrlarini yuboring. Masalan: ?lat=41.31&lon=69.28"},
+            status=400
+        )
+
+    try:
+        user_lat = float(lat)
+        user_lon = float(lon)
+    except ValueError:
+        return Response({"detail": "❗ Noto‘g‘ri koordinatalar kiritilgan."}, status=400)
+
+    warehouses = Warehouse.objects.exclude(latitude__isnull=True, longitude__isnull=True)
+    if not warehouses.exists():
+        return Response({"detail": "Ombor ma’lumotlari mavjud emas."}, status=404)
+
+    nearest = None
+    min_dist = float('inf')
+
+    for w in warehouses:
+        dist = haversine(user_lat, user_lon, w.latitude, w.longitude)
+        if dist < min_dist:
+            nearest = w
+            min_dist = dist
+
+    return Response({
+        "nearest_warehouse": nearest.name,
+        "address": nearest.address,
+        "latitude": nearest.latitude,
+        "longitude": nearest.longitude,
+        "distance_km": round(min_dist, 2)
+    })
 
 
 @api_view(['GET'])
