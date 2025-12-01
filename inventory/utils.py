@@ -5,10 +5,10 @@ from django.conf import settings
 from .models import Product
 import requests
 
-_running = False  # Global flag
+_running = False
 
 def send_telegram_message(text: str):
-    """Telegramga xabar yuborish"""
+
     try:
         bot_token = settings.TELEGRAM_BOT_TOKEN
         chat_id = settings.TELEGRAM_ADMIN_CHAT_ID

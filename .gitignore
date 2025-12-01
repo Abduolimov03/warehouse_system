@@ -1,0 +1,31 @@
+# Python cache va temporary fayllar
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django migrations fayllari
+*/migrations/*.py
+*/migrations/*.pyc
+
+# SQLite database (agar kerak bo‘lmasa)
+db.sqlite3
+
+# Env fayl (maxfiy ma’lumotlar)
+.env
+
+# IDE va editor fayllari
+*.idea/
+*.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS fayllari
+.DS_Store
+Thumbs.db
+
+# Log fayllari
+*.log
+
+# Temporary fayllar
+*.tmp
+*.swp
