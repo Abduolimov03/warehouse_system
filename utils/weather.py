@@ -20,10 +20,9 @@ def send_telegram_message(text: str):
     except Exception as e:
         print(f"[Telegram Error] {e}")
 
-def fetch_weather(city: str = "Tashkent"):
-    """
-    OpenWeather API orqali ob-havo ma'lumotini oladi
-    """
+
+
+def fetch_weather(city: str = "Tashkent/Angren"):
     api_key = getattr(settings, "OPENWEATHER_API_KEY", None)
     if not api_key:
         print("[Weather Error] OPENWEATHER_API_KEY settingsda mavjud emas")
@@ -52,9 +51,6 @@ def fetch_weather(city: str = "Tashkent"):
         return None
 
 def weather_scheduler(city: str = "Tashkent"):
-    """
-    Har 24 soatda Telegramga ob-havo yuboradi
-    """
     while True:
         message = fetch_weather(city)
         if message:
