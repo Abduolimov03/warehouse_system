@@ -2,14 +2,6 @@ import requests
 import threading
 import time
 from django.conf import settings
-from django.http import JsonResponse
-from .weather import start_weather_scheduler
-
-def start_weather(request):
-    city = request.GET.get("city", "Tashkent")
-    start_weather_scheduler(city)
-    return JsonResponse({"status": "started", "city": city})
-
 
 def send_telegram_message(text: str):
     try:
