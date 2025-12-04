@@ -2,11 +2,16 @@ import requests
 import threading
 import time
 from django.conf import settings
+from django.http import JsonResponse
+from .weather import start_weather_scheduler
+
+def start_weather(request):
+    city = request.GET.get("city", "Tashkent")
+    start_weather_scheduler(city)
+    return JsonResponse({"status": "started", "city": city})
+
 
 def send_telegram_message(text: str):
-    """
-    Telegramga xabar yuboradi
-    """
     try:
         bot_token = settings.TELEGRAM_BOT_TOKEN
         chat_id = settings.TELEGRAM_ADMIN_CHAT_ID
@@ -61,9 +66,6 @@ def weather_scheduler(city: str = "Tashkent"):
         time.sleep(86400)  # 24 soat = 86400 soniya
 
 def start_weather_scheduler(city: str = "Tashkent"):
-    """
-    Threadni ishga tushiradi (daemon=True, server ishlashda fon)
-    """
     thread = threading.Thread(target=weather_scheduler, args=(city,), daemon=True)
     thread.start()
     print("⏳ Weather scheduler ishga tushdi...")
